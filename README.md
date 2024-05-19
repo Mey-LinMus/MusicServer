@@ -1,0 +1,5 @@
+- SERVER: Music integration (doc auth): npm i spotify-web-api-node - https://www.npmjs.com/package/spotify-web-api-node
+- SERVER: npm i express - https://www.npmjs.com/package/express
+- SERVER: npm i nodemon - https://www.npmjs.com/package/nodemon
+- npm i body-parser - https://www.npmjs.com/package/body-parser
+- npm i dotenv - https://www.npmjs.com/package/dotenv
