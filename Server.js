@@ -7,7 +7,13 @@ require("dotenv").config();
 const app = express();
 const port = 8888;
 
+const requestLogger = (req, res, next) => {
+  console.log(`Request: ${req.method} ${req.url}`);
+  next(); // Call the next middleware in the chain
+};
+
 app.use(cors()); // Enable CORS for all routes
+app.use(requestLogger);
 
 app.get("/token", async (req, res) => {
   const clientId = process.env.CLIENT_ID;
