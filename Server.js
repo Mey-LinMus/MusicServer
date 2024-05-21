@@ -5,7 +5,7 @@ const bodyParser = require("body-parser");
 const SpotifyWebApi = require("spotify-web-api-node");
 
 const app = express();
-const port = process.env.PORT || 4000;
+const port = process.env.PORT || 8888;
 
 app.use(cors());
 app.use(bodyParser.json());
