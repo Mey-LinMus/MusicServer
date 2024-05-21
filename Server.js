@@ -5,6 +5,8 @@ const bodyParser = require("body-parser");
 const SpotifyWebApi = require("spotify-web-api-node");
 
 const app = express();
+const port = process.env.PORT || 4000;
+
 app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -22,12 +24,12 @@ app.post("/refresh", (req, res) => {
     .refreshAccessToken()
     .then((data) => {
       res.json({
-        accessToken: data.body.accessToken,
-        expiresIn: data.body.expiresIn,
+        accessToken: data.body.access_token,
+        expiresIn: data.body.expires_in,
       });
     })
     .catch((err) => {
-      console.log(err);
+      console.error(err);
       res.sendStatus(400);
     });
 });
@@ -50,8 +52,15 @@ app.post("/login", (req, res) => {
       });
     })
     .catch((err) => {
+      console.error(err);
       res.sendStatus(400);
     });
 });
 
-app.listen(8888);
+app.get("/", (req, res) => {
+  res.send("Hello World!");
+});
+
+app.listen(port, () => {
+  console.log(`Example app listening on port ${port}`);
+});
