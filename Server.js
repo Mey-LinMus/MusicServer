@@ -1,46 +1,57 @@
-const express = require("express");
-const axios = require("axios");
-const qs = require("qs");
-const cors = require("cors"); // Import the cors package
 require("dotenv").config();
+const express = require("express");
+const cors = require("cors");
+const bodyParser = require("body-parser");
+const SpotifyWebApi = require("spotify-web-api-node");
 
 const app = express();
-const port = 8888;
+app.use(cors());
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
-const requestLogger = (req, res, next) => {
-  console.log(`Request: ${req.method} ${req.url}`);
-  next(); // Call the next middleware in the chain
-};
+app.post("/refresh", (req, res) => {
+  const refreshToken = req.body.refreshToken;
+  const spotifyApi = new SpotifyWebApi({
+    redirectUri: process.env.REDIRECT_URI,
+    clientId: process.env.CLIENT_ID,
+    clientSecret: process.env.CLIENT_SECRET,
+    refreshToken,
+  });
 
-app.use(cors()); // Enable CORS for all routes
-app.use(requestLogger);
-
-app.get("/token", async (req, res) => {
-  const clientId = process.env.CLIENT_ID;
-  const clientSecret = process.env.CLIENT_SECRET;
-
-  try {
-    const tokenResponse = await axios({
-      method: "post",
-      url: "https://accounts.spotify.com/api/token",
-      headers: {
-        "Content-Type": "application/x-www-form-urlencoded",
-        Authorization:
-          "Basic " +
-          Buffer.from(clientId + ":" + clientSecret).toString("base64"),
-      },
-      data: qs.stringify({
-        grant_type: "client_credentials",
-      }),
+  spotifyApi
+    .refreshAccessToken()
+    .then((data) => {
+      res.json({
+        accessToken: data.body.accessToken,
+        expiresIn: data.body.expiresIn,
+      });
+    })
+    .catch((err) => {
+      console.log(err);
+      res.sendStatus(400);
     });
-
-    res.json(tokenResponse.data);
-  } catch (error) {
-    console.error("Error fetching token from Spotify:", error);
-    res.status(500).send("Internal Server Error");
-  }
 });
 
-app.listen(port, () => {
-  console.log(`Server running on port ${port}`);
+app.post("/login", (req, res) => {
+  const code = req.body.code;
+  const spotifyApi = new SpotifyWebApi({
+    redirectUri: process.env.REDIRECT_URI,
+    clientId: process.env.CLIENT_ID,
+    clientSecret: process.env.CLIENT_SECRET,
+  });
+
+  spotifyApi
+    .authorizationCodeGrant(code)
+    .then((data) => {
+      res.json({
+        accessToken: data.body.access_token,
+        refreshToken: data.body.refresh_token,
+        expiresIn: data.body.expires_in,
+      });
+    })
+    .catch((err) => {
+      res.sendStatus(400);
+    });
 });
+
+app.listen(8888);
