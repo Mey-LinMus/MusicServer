@@ -2,9 +2,9 @@
   "name": "Music-server",
   "version": "1.0.0",
   "description": "",
-  "main": "dist/server.js",
+  "main": "server.js",
   "scripts": {
-    "devStart": "nodemon server.js && ls dist"
+    "start": "node server.js"
   },
   "keywords": [],
   "author": "",
