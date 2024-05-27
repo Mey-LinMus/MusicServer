@@ -60,7 +60,7 @@ app.post("/login", (req, res) => {
 });
 
 app.get("/", (req, res) => {
-  res.send("Hello World!");
+  res.send("Hello World, how are you!");
 });
 
 app.listen(port, () => {
