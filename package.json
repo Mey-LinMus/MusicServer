@@ -2,6 +2,7 @@
   "name": "Music-server",
   "version": "1.0.0",
   "description": "",
+  "main": "dist/server.js",
   "scripts": {
     "devStart": "nodemon server.js && ls dist"
   },
@@ -18,7 +19,6 @@
     "react-spotify-web-playback": "^0.14.4",
     "spotify-web-api-node": "^5.0.2"
   },
-
   "devDependencies": {
     "nodemon": "^3.1.0"
   }
