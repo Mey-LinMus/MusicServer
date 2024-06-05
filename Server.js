@@ -61,7 +61,7 @@ app.get("/api/albums/:id", (req, res) => {
     });
 });
 
-app.get("/api/playlists/:id/tracks", (req, res) => {
+app.get("/api/playlists/:id", (req, res) => {
   const playlistId = req.params.id;
 
   spotifyApi.setAccessToken(accessToken);
