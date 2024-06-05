@@ -10,6 +10,11 @@ app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
+const corsOptions = {
+  origin: "https://workzen-webapp.onrender.com",
+};
+app.use(cors(corsOptions));
+
 const spotifyApi = new SpotifyWebApi({
   clientId: process.env.CLIENT_ID,
   clientSecret: process.env.CLIENT_SECRET,
